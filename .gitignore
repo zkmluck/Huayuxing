@@ -42,7 +42,3 @@ frontend/src/data/*
 !frontend/src/data/personality-cards.js
 
 !frontend/src/data/values-explanations.js
-
-# Local competition narration scripts; never upload
-**/*比赛介绍演讲稿*.txt
-**/*演讲稿*.txt
