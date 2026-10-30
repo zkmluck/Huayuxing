@@ -21,7 +21,7 @@ const relations = computed(() => {
 const savedResult = computed(() => complete.value ? {type:'tarot',title:`星栈映照 · ${result.value.spread_name}`,summary:result.value.question||'借随机牌面记录一次自我观察',sections:[
   {title:'牌面与反思',lines:result.value.cards.map(c=>`${c.position} · ${c.card}（${c.orientation}）：${c.reflection.theme}。${c.reflection.observation} ${c.reflection.orientation} ${c.reflection.prompt}`)},
   {title:'带回生活',lines:relations.value},
-  {title:'本次记录',lines:[`引擎：${result.value.engine}；编号：${result.value.draw_id}`,result.value.method,'传统牌名保留，梦溯独立编写牌阵、反思文本和抽取实现；仅用于娱乐与自我观察。']}
+  {title:'本次记录',lines:[`引擎：${result.value.engine}；编号：${result.value.draw_id}`,result.value.method,'传统牌名保留，花屿星独立编写牌阵、反思文本和抽取实现；仅用于娱乐与自我观察。']}
 ]} : null)
 async function draw() {
   if(busy.value) return
@@ -57,7 +57,7 @@ function reset() { result.value=null; revealed.value=[]; error.value='' }
           <div v-for="(card, index) in result.cards" :key="index" class="card-slot"><p class="position">{{ index + 1 }} · {{ card.position }}</p><button class="tarot-card" :class="{ revealed: revealed.includes(index) }" :aria-label="revealed.includes(index) ? `${card.card}，${card.orientation}` : `翻开第 ${index + 1} 张，${card.position}`" :aria-pressed="revealed.includes(index)" @click="reveal(index)"><template v-if="revealed.includes(index)"><small>{{ card.is_major ? '大阿卡纳' : '小阿卡纳' }}</small><span class="card-symbol" aria-hidden="true">{{ card.is_major ? '✧' : { 权杖: '♧', 圣杯: '☾', 宝剑: '✦', 星币: '◇' }[card.card.slice(0, 2)] }}</span><strong>{{ card.card.replace('Ace', '王牌') }}</strong><span class="orientation">{{ card.orientation }}</span></template><template v-else><span class="back-mark" aria-hidden="true">✧</span><span>点击翻牌</span></template></button></div>
         </div>
       </section>
-      <section v-if="revealed.length" class="tarot-panel" aria-live="polite"><h2>牌义与自我提问</h2><p class="muted">以下为梦溯编写的反思提示。牌是随机抽取的，不是对你的经历或未来的判断。</p><article v-for="(card, index) in result.cards" v-show="revealed.includes(index)" :key="card.position" class="reading"><h3>{{ card.position }} · {{ card.card.replace('Ace', '王牌') }} <small>{{ card.orientation }}</small></h3><p class="theme">{{ meaning(card).theme }}</p><p>{{ meaning(card).observation }}</p><p>{{ meaning(card).orientation }}</p><p>{{ meaning(card).prompt }}</p></article></section>
+      <section v-if="revealed.length" class="tarot-panel" aria-live="polite"><h2>牌义与自我提问</h2><p class="muted">以下为花屿星编写的反思提示。牌是随机抽取的，不是对你的经历或未来的判断。</p><article v-for="(card, index) in result.cards" v-show="revealed.includes(index)" :key="card.position" class="reading"><h3>{{ card.position }} · {{ card.card.replace('Ace', '王牌') }} <small>{{ card.orientation }}</small></h3><p class="theme">{{ meaning(card).theme }}</p><p>{{ meaning(card).observation }}</p><p>{{ meaning(card).orientation }}</p><p>{{ meaning(card).prompt }}</p></article></section>
       <section v-if="complete" class="tarot-panel"><h2>把线索带回生活</h2><p v-for="line in relations" :key="line">{{ line }}</p><p>今天留五分钟，写下最有共鸣的一张牌，以及与它有关的一件真实小事。再选一个能在本周完成的小行动。</p><p class="muted">这些牌让你想起了什么？哪一部分与你的实际感受不同？你的选择随时可以改变走向。</p></section>
       <TestResultSave v-if="complete" :record="savedResult" /><details class="draw-meta"><summary>这次是怎样抽取的？</summary><p>{{ result.method }}</p><p>记录编号：{{ result.draw_id }}</p><p>引擎：{{ result.engine }} · 随机结果没有预测意义，也不会替你作决定。</p></details>
     </template>
